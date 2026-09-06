@@ -4,11 +4,11 @@ from core.models import PublishedModel
 
 
 class Category(PublishedModel):
-    title = models.CharField('Название', max_length=256)
-    slug = models.SlugField('Слаг', max_length=64, unique=True)
+    title = models.CharField(max_length=256, verbose_name='Название')
+    slug = models.SlugField(max_length=64, unique=True, verbose_name='Слаг')
     output_order = models.PositiveSmallIntegerField(
-        'Порядок отображения',
         default=100,
+        verbose_name='Порядок отображения'
     )
 
     class Meta:
@@ -49,6 +49,11 @@ class Wrapper(PublishedModel):
 class IceCream(PublishedModel):
     title = models.CharField('Название', max_length=256)
     description = models.TextField('Описание')
+    output_order = models.PositiveSmallIntegerField(
+        default=100,
+        verbose_name='Порядок отображения'
+    )
+    price = models.DecimalField(max_digits=5, decimal_places=2)
     wrapper = models.OneToOneField(
         Wrapper,
         on_delete=models.SET_NULL,
@@ -69,6 +74,7 @@ class IceCream(PublishedModel):
     class Meta:
         verbose_name = 'мороженое'
         verbose_name_plural = 'Мороженое'
+        ordering = ('output_order', 'title')
 
     def __str__(self):
         return self.title
